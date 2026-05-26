@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Filme</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
+        h1 { color: #333; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        a { color: #007bff; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        nav { margin-bottom: 20px; text-align: center; }
+        nav a { margin: 0 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Acasă</a>
+    <a href="/filme">Filme</a>
+</nav>
+
+<div class="container">
+    <h1>Catalog de Filme</h1>
+    
+    <form action="/filme" method="get" style="text-align: center; margin-bottom: 20px;">
+        <input type="text" name="q" th:value="${q}" placeholder="Caută un film..." style="padding: 10px; width: 60%; border-radius: 4px; border: 1px solid #ccc;">
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Caută</button>
+        <a href="/filme" style="margin-left: 10px; color: #dc3545; text-decoration: none;">Arată altele random</a>
+    </form>
+
+    <p style="text-align: center; color: #555;"><i>(Afișează 50 de filme per pagină. Dacă nu cauți nimic, afișează filme random la fiecare reload)</i></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Titlu</th>
+            <th>Descriere</th>
+            <th>Categorie</th>
+            <th>Lansare</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="f : ${listaFilme}">
+            <td th:text="${f.titluFilm}"></td>
+            <td th:text="${f.descriereFilm ?: 'Fără descriere'}"></td>
+            <td th:text="${f.tipCategorie}"></td>
+            <td th:text="${f.dataLansare}"></td>
+            <td>
+                <a th:href="@{'/film/' + ${f.idFilm}}">Deschide Film</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

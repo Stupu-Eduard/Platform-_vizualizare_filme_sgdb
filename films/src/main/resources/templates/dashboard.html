@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard & Statistici PL/pgSQL</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 900px; margin: auto; }
+        h1, h2, h3 { color: #333; }
+        .section { background: #e9ecef; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 5px solid #007bff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
+        th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        nav { margin-bottom: 20px; text-align: center; }
+        nav a { margin: 0 10px; font-weight: bold; text-decoration: none; color: #007bff; }
+        nav a:hover { text-decoration: underline; }
+        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        input[type="number"] { padding: 5px; width: 80px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Acasă</a>
+    <a href="/filme">Catalog Filme</a>
+    <a href="/dashboard">Dashboard Statistici (PL/pgSQL)</a>
+</nav>
+
+<div class="container">
+    <h1>Dashboard Analytics (Generat din PL/pgSQL)</h1>
+    <p>Această pagină demonstrează utilizarea funcțiilor complexe stocate pe serverul bazei de date.</p>
+
+    <form th:action="@{/dashboard/statistici}" method="post" style="margin-bottom: 20px;">
+        <label>ID Client pentru analiză:</label>
+        <input type="number" name="idClient" th:value="${idClient ?: 1}" min="1" required>
+
+        <label style="margin-left: 20px;">Lună pentru predicție sezonieră (1-12):</label>
+        <input type="number" name="lunaPredictie" th:value="${lunaPredictie ?: 12}" min="1" max="12" required>
+
+        <button type="submit" style="margin-left: 20px;">Generează Rapoarte</button>
+    </form>
+
+    <!-- Sectiunea 1: Statistici Generale -->
+    <div class="section" th:if="${statistici}">
+        <h3>1. Statistici Consum (fn: get_statistici_consum)</h3>
+        <p><strong>Total Minute Vizionate:</strong> <span th:text="${statistici.total_minute ?: 0}"></span> min</p>
+        <p><strong>Număr Filme Unice:</strong> <span th:text="${statistici.filme_vazute ?: 0}"></span></p>
+        <p><strong>Calitate Preferată:</strong> <span th:text="${statistici.calitate_preferata ?: 'N/A'}"></span></p>
+    </div>
+
+    <!-- Sectiunea 2: Recomandari prin Similaritate -->
+    <div class="section" th:if="${recomandariSimilaritate}">
+        <h3>2. Recomandări prin Similaritate (fn: get_recomandari_prin_similaritate)</h3>
+        <p><i>Găsește filme apreciate de alți utilizatori care au gusturi asemănătoare cu clientul curent.</i></p>
+        <ul>
+            <li th:each="r : ${recomandariSimilaritate}" th:text="${r.titlu_recomandat}"></li>
+        </ul>
+        <p th:if="${#lists.isEmpty(recomandariSimilaritate)}">Nu există destule date pentru a genera o recomandare prin similaritate.</p>
+    </div>
+
+    <!-- Sectiunea 3: Recomandari pe baza de Gen -->
+    <div class="section" th:if="${recomandariGen}">
+        <h3>3. Recomandări după Categorie (fn: get_recomandari_client)</h3>
+        <p><i>Filme nevizionate încă de client, din categoriile unde acesta a dat rating mare.</i></p>
+        <table>
+            <tr><th>Titlu Film</th><th>Medie Rating</th></tr>
+            <tr th:each="r : ${recomandariGen}">
+                <td th:text="${r.titlu}"></td>
+                <td th:text="${r.medie_rating}"></td>
+            </tr>
+        </table>
+        <p th:if="${#lists.isEmpty(recomandariGen)}">Clientul nu are rating-uri suficient de mari pentru a primi recomandări pe categorii.</p>
+    </div>
+
+    <!-- Sectiunea 4: Predictii Sezoniere -->
+    <div class="section" th:if="${predictii}">
+        <h3>4. Predicție Sezonieră (fn: get_predictie_sezoniera)</h3>
+        <p><i>Estimează popularitatea filmelor pentru luna selectată (ajustată cu 50% creștere).</i></p>
+        <table>
+            <tr><th>Titlu Film</th><th>Vizualizări Estimate</th></tr>
+            <tr th:each="p : ${predictii}">
+                <td th:text="${p.titlu_film}"></td>
+                <td th:text="${p.vizualizari_estimate}"></td>
+            </tr>
+        </table>
+        <p th:if="${#lists.isEmpty(predictii)}">Nu există istoric pentru această lună.</p>
+    </div>
+
+<!-- Sectiunea 5: Istoric Complet -->
+<div class="section" th:if="${istoric}">
+    <h3>5. Istoric Complet Vizualizări</h3>
+    <table>
+        <tr>
+            <th>Data</th>
+            <th>Film</th>
+            <th>Rezoluție</th>
+            <th>Limbă</th>
+            <th>Durată (min)</th>
+            <th>Stare</th>
+        </tr>
+        <tr th:each="h : ${istoric}">
+            <td th:text="${h.data_vizualizare}"></td>
+            <td th:text="${h.titlu_film}"></td>
+            <td th:text="${h.rezolutie}"></td>
+            <td th:text="${h.limba_versiune}"></td>
+            <td th:text="${h.durata_vizualizare}"></td>
+            <td th:text="${h.stare_vizualizare}"></td>
+        </tr>
+    </table>
+    <p th:if="${#lists.isEmpty(istoric)}">Clientul nu are nicio vizualizare înregistrată.</p>
+</div>
+
+</div>
+
+</body>
+</html>

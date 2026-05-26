@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>REFERAT.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="referat-proiect-platformă-vizualizare-filme-proiect-4">Referat Proiect: Platformă vizualizare filme (Proiect 4)</h1>
+<p><strong>Curs:</strong> Sisteme de gestiune a bazelor de date<br>
+<strong>Student:</strong> Stupu Eduard-Stefan</p>
+<h2 id="1-descrierea-cerintelor-de-business">1. Descrierea cerintelor de business:</h2>
+<p>Proiectul vizează realizarea unei platforme informatice pentru gestionarea unui catalog de filme, a interacțiunilor utilizatorilor cu acestea și a procesului de
+recomandare inteligentă. Sistemul este construit pentru a servi atât administratorilor platformei, cât și utilizatorilor finali (clienți).</p>
+<h3 id="11-obiectivele-sistemului">1.1. Obiectivele Sistemului</h3>
+<ul>
+<li><strong>Managementul Multidimensional al Catalogului:</strong> Gestionarea filmelor (titlu, descriere, categorie, data lansării) și a versiunilor acestora (formate, rezoluții 4K/HD,
+variante lingvistice/subtitrări). Include calculul automat al rating-ului general pe baza voturilor clienților.</li>
+<li><strong>Monitorizarea Performanței Artistice:</strong> Evidența actorilor (nume de scenă, date personale) și evaluarea critică a prestației acestora prin comentarii specifice fiecărui
+rol interpretat.</li>
+<li><strong>Sistem Avansat de CRM (Customer Relationship Management):</strong> Urmărirea profilului clientului (nume, adrese fizice detaliate pe orașe, multiple numere de telefon) și a
+istoricului de consum (data accesării, versiunea aleasă, durata vizualizării și frecvența vizionărilor).</li>
+<li><strong>Motor de Analiză Comportamentală și Emoțională:</strong> Implementarea unui sistem hibrid de feedback compus din rating numeric, analiză critică textuală (Sentiment Analysis
+bazat pe cuvinte-cheie) și opțiuni predefinite bifabile (ex: &quot;interesant&quot;, &quot;scenariu slab&quot;, &quot;emoționant&quot;).</li>
+<li><strong>Inteligență în Recomandări și Predicții:</strong> Gruparea utilizatorilor după similarități (preferințe de gen, actori urmăriți, profil emoțional) pentru generarea de
+recomandări personalizate și realizarea de prognoze sezoniere (estimarea volumului de vizualizări în perioade de sărbători sau vacanțe).</li>
+<li><strong>Procesare la Nivel de Server (Data-Centric Logic):</strong> Mutarea întregii logici de calcul statistic, a analizei de sentiment și a sistemului de recomandare la nivel de
+server de baze de date, prin implementarea de proceduri stocate și funcții PL/pgSQL, asigurând performanță și integritate.</li>
+</ul>
+<h3 id="12-reguli-de-business-și-logică-de-funcționare">1.2. Reguli de Business și Logică de Funcționare</h3>
+<p>Pentru a asigura o proiectare riguroasă a bazei de date, au fost identificate următoarele reguli ce guvernează funcționarea platformei:</p>
+<ol>
+<li>
+<p><strong>Gestiunea Catalogului și a Versiunilor:</strong> Un film este caracterizat prin titlu, descriere, categorie și data lansării. Unicitatea conținutului este nuanțată prin
+existența mai multor versiuni disponibile pentru vizualizare (formate diferite, rezoluții 4K/HD sau variante lingvistice/subtitrări distincte). Rating-ul general al
+unui film nu este stocat static, ci este calculat dinamic pe baza voturilor agregate de la clienți.</p>
+</li>
+<li>
+<p><strong>Managementul Actorilor și a Prestației Artistice:</strong> Pentru fiecare actor se rețin datele de identificare (nume de scenă, nume real, prenume) și data nașterii. Sistemul
+permite o evaluare granulară a muncii acestora prin înregistrarea comentariilor specifice referitoare la rolul interpretat într-un anumit film, oferind o imagine de
+ansamblu asupra aprecierii prestației artistice a fiecărui actor.</p>
+</li>
+<li>
+<p><strong>Profilul Detaliat al Clientului:</strong> Identificarea clienților în sistem necesită obligatoriu numele, prenumele, un număr de telefon fix (de acasă), adresa completă și
+orașul. Opțional, se pot colecta adresa de e-mail și numărul de telefon mobil. Această structură permite o evidență clară a utilizatorilor și a distribuției lor
+geografice.</p>
+</li>
+<li>
+<p><strong>Monitorizarea Consumului (Istoric Vizualizări):</strong> Sistemul urmărește fiecare interacțiune a clientului cu un film, înregistrând data vizualizării, versiunea tehnică
+selectată, durata vizionării și starea acesteia (completă/întreruptă). Un client poate accesa mai multe filme, iar un film poate fi urmărit de același client de mai
+multe ori, la intervale diferite, generând un istoric complet al activității.</p>
+</li>
+<li>
+<p><strong>Sistemul Hibrid de Feedback și Vot:</strong> Clienții pot evalua filmele și actorii prin trei modalități simultane:</p>
+</li>
+</ol>
+<ul>
+<li>Un rating numeric pentru calculul mediilor.</li>
+<li>O analiză critică textuală (comentariu liber) pentru detalii calitative.</li>
+<li>O selecție de opțiuni predefinite (checkbox-uri) care descriu experiența subiectivă (ex: &quot;mi-a plăcut&quot;, &quot;emoționant&quot;, &quot;plictisitor&quot;, &quot;scenariu slab&quot;).</li>
+</ul>
+<ol start="6">
+<li>
+<p><strong>Analiza Emoțională și de Sentiment (Keywords):</strong> La nivelul serverului de baze de date (PL/pgSQL), comentariile și etichetele bifate sunt procesate prin identificarea
+unor cuvinte-cheie relevante. Rezultatul este clasificarea automată a sentimentului utilizatorului (Pozitiv, Negativ sau Neutru), analiză ce poate fi aplicată la
+nivel de film, categorie, actor sau profil de utilizator.</p>
+</li>
+<li>
+<p><strong>Calculul Similarității și Recomandări Personalizate:</strong> Utilizatorii sunt grupați automat pe baza similarităților dintre preferințele lor. Această similaritate este
+calculată analizând categoriile vizualizate frecvent, frecvența vizualizărilor, scorurile acordate, emoțiile identificate în feedback și aprecierile față de anumiți
+actori. Rezultatul permite generarea de recomandări de filme între utilizatori cu profiluri cinematografice similare.</p>
+</li>
+<li>
+<p><strong>Predicții și Estimări Sezoniere:</strong> Aplicația realizează previziuni privind succesul anumitor filme în perioade specifice ale anului (sărbători, vacanțe, intervale
+sezoniere). Aceste estimări se bazează pe analiza datelor istorice de vizualizare, pe popularitatea categoriilor și pe reacțiile anterioare ale clienților în contexte
+temporale similare.</p>
+</li>
+<li>
+<p><strong>Logica Centralizată (Server-Side Statistics):</strong> Toate calculele statistice, clasificările de sentiment și algoritmii de recomandare sau predicție sunt implementați
+exclusiv la nivelul bazei de date sub formă de proceduri stocate și funcții complexe, aplicația client având rolul de a prelua și afișa rezultatele finale.</p>
+</li>
+</ol>
+<h3 id="2-normalizarea-schemei-bazei-de-date">2. Normalizarea Schemei Bazei de Date</h3>
+<p>Procesul de proiectare a bazei de date a urmat etapele de normalizare pentru a elimina redundanța și a preveni anomaliile de actualizare.</p>
+<h3 id="21-relația-universală-r">2.1. <strong>Relația Universală (R)</strong></h3>
+<p>Conform metodologiei de proiectare, pornim de la o singură relație care conține toate atributele brute. Această stare este una nenormalizată, prezentând riscuri majore de
+redundanță și anomalii la inserare, ștergere și modificare.</p>
+<p><img src="./images/relatie_universala_filme.png" alt="Relatia_Universala"></p>
+<h3 id="22-identificarea-dependențelor-funcționale-df">2.2. <strong>Identificarea Dependențelor Funcționale (DF)</strong></h3>
+<p>Analizând regulile de business din secțiunea 1.2, stabilim următoarele dependențe:</p>
+<ul>
+<li>
+<p><strong>DF1:</strong> ID_Client -&gt; Nume_C, Prenume_C, Tel_Acasa, Adresa, Oras, Email, Tel_Mobil</p>
+<p><strong>Explicație:</strong> Datele de identificare și contact depind de ID-ul unic al clientului.</p>
+</li>
+<li>
+<p><strong>DF2:</strong> ID_Film -&gt; Titlu, Descriere, Data_Lansare, ID_Categorie</p>
+<p><strong>Explicație:</strong> Metadatele filmului sunt determinate de ID-ul acestuia.</p>
+</li>
+<li>
+<p><strong>DF3:</strong> ID_Categorie -&gt; Tip_Categorie</p>
+<p><strong>Explicație:</strong> Denumirea/Tipul genului depinde de ID-ul categoriei.</p>
+</li>
+<li>
+<p><strong>DF4:</strong> ID_Versiune -&gt; ID_Film, Rezolutie, Format, Limba</p>
+<p><strong>Explicație:</strong> O versiune tehnică este o resursă specifică unui film, având format și rezoluție proprii.</p>
+</li>
+<li>
+<p><strong>DF5:</strong> ID_Actor -&gt; Nume_Scena, Prenume_A, Nume_A, Data_Nastere_A</p>
+<p><strong>Explicație:</strong> Informațiile biografice ale actorului sunt determinate de ID-ul său.</p>
+</li>
+<li>
+<p><strong>DF6:</strong> ID_Client, ID_Film, Data_Vizualizare -&gt; ID_Versiune, Durata, Stare_Vizualizare</p>
+<p><strong>Explicație:</strong> Determină varianta vizionată, cât a durat și dacă a fost finalizată.</p>
+</li>
+<li>
+<p><strong>DF7:</strong> ID_Client, ID_Film -&gt; Rating, Comentariu_Text, Sentiment</p>
+<p><strong>Explicație:</strong> Un client acordă un single set de feedback (notă, text, sentiment) pentru un anumit film.</p>
+</li>
+<li>
+<p><strong>DF8:</strong> ID_Client, ID_Film, ID_Actor -&gt; Comentariu_Actor_Rol</p>
+<p><strong>Explicație:</strong> Comentariul asupra prestației artistice depinde de combinația dintre filmul vizionat și actorul evaluat.</p>
+</li>
+</ul>
+<h3 id="23-aplicarea-algoritmului-de-descompunere-bcnf">2.3. Aplicarea Algoritmului de Descompunere (BCNF)</h3>
+<ul>
+<li>O relație este în BCNF dacă pentru orice dependență funcțională netrivială $X \to Y$, $X$ este o cheie candidată.</li>
+<li>Relația universală nu este în BCNF deoarece există dependențe unde determinantul nu este o cheie candidată pentru întreaga relație. Aplicăm descompunerea succesivă:</li>
+</ul>
+<ol>
+<li><strong>Clienti</strong> (ID_Client, Nume_Client, Prenume_Client, Tel_Acasa, Adresa, Oras, Email, Tel_Mobil)</li>
+<li><strong>Categorii</strong> (ID_Categorie, Tip_Categorie)</li>
+<li><strong>Filme</strong> (ID_Film, Titlu_Film, Descriere_Film, Data_Lansare, ID_Categorie)</li>
+<li><strong>Versiuni_Film</strong> (ID_Versiune, ID_Film, Rezolutie, Format, Limba_Versiune)</li>
+<li><strong>Actori</strong> (ID_Actor, Nume_Scena_Actor, Nume_Familie_Actor, Prenume_Actor, Data_Nastere_Actor)</li>
+</ol>
+<h3 id="24-dependențe-multivaluate-și-forma-normală-4-4nf">2.4. Dependențe Multivaluate și Forma Normală 4 (4NF)</h3>
+<ul>
+<li>O relație este în 4NF dacă este în BCNF și pentru orice dependență multivaluată netrivială $X \twoheadrightarrow Y$, $X$ este o cheie candidată.</li>
+<li>Schema rezultată din BCNF prezintă riscuri de redundanță din cauza listelor independente (ex: un film are mai mulți actori și mai multe etichete de feedback). Pentru a
+evita multiplicarea rândurilor prin produs cartezian, am aplicat descompunerea pentru a izola aceste dependențe:</li>
+</ul>
+<ol>
+<li>
+<p><strong>Distributie</strong> (ID_Film, ID_Actor)<br>
+<em><strong>Explicație:</strong></em> Am creat acest tabel pentru a gestiona relația de tip Many-to-Many dintre filme și actori.</p>
+</li>
+<li>
+<p><strong>Feedback_Actori</strong> (ID_Client, ID_Film, ID_Actor, Comentariu_Actor_Rol)<br>
+<strong>Explicație:</strong> Acest tabel izolează opiniile subiective ale clienților despre prestația unui actor specific într-un anumit film.</p>
+</li>
+<li>
+<p><strong>Vizualizari</strong> (ID_Vizualizare, ID_Client, ID_Versiune,ID_Film, Data_Vizualizare, Durata_Vizualizare, Stare_Vizualizare)<br>
+<strong>Explicație:</strong>  Am separat aceste date deoarece vizualizările sunt evenimente multiple și independente
+care depind de tripletul (Client, Versiune, Timp), evitând astfel repetarea inutilă a datelor de profil ale clientului la fiecare vizionare.</p>
+</li>
+<li>
+<p><strong>Feedback_Voturi</strong> (ID_Feedback, ID_Client, ID_Film, Rating_Film, Comentariu_Film_Text, Sentiment_Analiza)<br>
+<strong>Explicație:</strong> Separarea feedback-ului de istoricul vizualizărilor permite clienților să lase o singură recenzie per film,
+facilitând calculul mediei de rating și execuția algoritmilor de analiză de sentiment la nivel de server.</p>
+</li>
+<li>
+<p><strong>Caracterizari_Selectate</strong> (ID_Feedback, Eticheta_Predefinita)<br>
+<strong>Explicație:</strong> Un singur feedback poate avea mai multe etichete asociate simultan (ex: &quot;emoționant&quot; și
+&quot;interesant&quot;), am izolat această dependență multivaluată pentru a preveni redundanța masivă în tabelul principal de feedback.</p>
+</li>
+</ol>
+<h3 id="3-diagrama-entitate-asociere-uml-și-schema-conceptuală">3. Diagrama Entitate-Asociere (UML) și Schema Conceptuală</h3>
+<p>În această etapă, am transpus regulile de normalizare într-un model vizual care reflectă arhitectura bazei de date și relațiile dintre entități.</p>
+<p>3.1. Diagrama UML a Sistemului</p>
+<p><img src="images/diagrama_uml.png" alt="diagrama uml"></p>
+<h3 id="32-descrierea-entităților-și-a-asocierilor">3.2. Descrierea Entităților și a Asocierilor</h3>
+<p>Modelul este format din 10 entități, grupate logic pentru a asigura performanța și integritatea:</p>
+<ol>
+<li>Entități de Catalog: Filme, Categorii, Versiuni_Film, Actori. Acestea stochează datele de bază ale platformei.</li>
+<li>Entități de Utilizatori: Clienti - stochează profilul complet al consumatorului.</li>
+<li>Entități de Eveniment/Interacțiune: Vizualizari, Feedback_Voturi, Feedback_Actori. Acestea înregistrează acțiunile dinamice ale utilizatorilor.</li>
+<li>Entități de Detaliu: Distributie (joncțiune M:N) și Caracterizari_Selectate (atribute multivaluate).</li>
+</ol>
+<h3 id="33-transcrierea-relațiilor-între-instanțe">3.3. Transcrierea Relațiilor între Instanțe</h3>
+<p>Conform cerințelor, am analizat modul în care instanțele entităților interacționează la nivel de date:</p>
+<ul>
+<li>Asocierea Film - Versiune (1:N): O instanță a setului Filme (ex: filmul &quot;Interstellar&quot;) este asociată cu mai multe instanțe din Versiuni_Film (ex: varianta &quot;4K -
+Engleză&quot; și varianta &quot;HD - Română&quot;). Reciproc, o instanță de Versiune aparține în mod obligatoriu și unic unui singur Film.</li>
+<li>Asocierea Categorie - Film (1:N): O instanță a setului Categorii (ex: 'Sci-Fi') se asociază cu $n$ instanțe de Filme. Un film nu poate fi creat fără a fi repartizat
+unei categorii existente.</li>
+<li>Asocierea Film - Actor (M:N): O instanță de Film poate avea mai multe instanțe de Actori în distribuție, iar un Actor poate juca în mai multe Filme. Această relație
+este mediată de entitatea Distributie.</li>
+<li>Asocierea Feedback - Caracterizări (1:N): O instanță de Feedback_Voturi poate fi descrisă prin mai multe instanțe de Etichete (ex: un singur vot poate avea bifate
+simultan opțiunile &quot;emoționant&quot; și &quot;interesant&quot;).</li>
+</ul>
+<h3 id="34-justificarea-designului-și-constrângeri">3.4. Justificarea Designului și Constrângeri</h3>
+<p>Pentru a garanta calitatea datelor, am implementat toate cele 5 tipuri de constrângeri:</p>
+<ol>
+<li><strong>Primary Key (PK):</strong> Am ales chei surogat (ID-uri numerice) pentru toate tabelele.
+<ul>
+<li>Justificare: Utilizarea unui ID numeric în locul unei chei naturale (cum ar fi Numele Actorului sau Titlul Filmului) asigură stabilitatea bazei de date. Dacă un
+actor își schimbă numele, legăturile cu filmele sale nu se rup. De asemenea, joncțiunile între tabele sunt mult mai rapide pe numere întregi decât pe șiruri de
+caractere.</li>
+</ul>
+</li>
+<li><strong>Foreign Key (FK):</strong> Utilizate pentru a impune integritatea referențială.
+<ul>
+<li>Exemplu: ID_Film în tabela Vizualizari.</li>
+<li>Justificare: Garantează că nu putem înregistra o vizionare pentru un film care nu există în catalog, prevenind apariția datelor &quot;orfane&quot;.</li>
+</ul>
+</li>
+<li><strong>Unique Constraint (UNIQUE):</strong>
+<ul>
+<li>Exemplu: Coloana Email în Clienti și combinația (ID_Client, ID_Film) în Feedback_Voturi.</li>
+<li>Justificare: Email-ul unic asigură că nu există conturi duplicate. Unicitatea perechii Client-Film în Feedback garantează că un utilizator nu poate vota de mai
+multe ori același film pentru a-i falsifica rating-ul.</li>
+</ul>
+</li>
+<li><strong>Not Null:</strong>
+<ul>
+<li>Exemplu: Titlu_Film, Tel_Acasa (pentru clienți).</li>
+<li>Justificare: Impune regulile de business: un film trebuie să aibă nume, iar un client trebuie să aibă obligatoriu un număr de telefon fix conform cerințelor.</li>
+</ul>
+</li>
+<li><strong>Check Constraint:</strong>
+<ul>
+<li>Exemplu: Rating_Film BETWEEN 1 AND 10.</li>
+<li>Justificare: Restricționează valorile introduse la un interval logic, eliminând erorile umane (ex: introducerea notei 11).</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-implementarea-bazei-de-date-scriptul-sql">4. Implementarea Bazei de Date (Scriptul SQL)</h3>
+<p>În această secțiune este prezentat scriptul complet de definire a obiectelor bazei de date. Scriptul a fost conceput pentru a fi idempotent, permițând rularea repetată
+fără a genera conflicte de structură.</p>
+<h3 id="41-instrucțiuni-de-curățare-cleanup">4.1. Instrucțiuni de Curățare (Cleanup)</h3>
+<p>Primul pas al scriptului asigură eliminarea oricăror structuri reziduale. Utilizarea clauzei CASCADE este critică aici pentru a forța ștergerea tabelelor părinte chiar
+dacă acestea sunt referențiate de chei străine.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> caracterizari_selectate CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> feedback_voturi CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> vizualizari CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> feedback_actori CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> distributie CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> versiuni_film CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> filme CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> actori CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> clienti CASCADE;
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> categorii CASCADE;
+</div></code></pre>
+<h3 id="42-crearea-structurii-ddl-și-gestiunea-auto-incrementării">4.2. Crearea Structurii (DDL) și Gestiunea Auto-incrementării</h3>
+<p>Am utilizat tipul de date SERIAL pentru toate cheile primare. Această alegere tehnică delega bazei de date sarcina de a crea și administra secvențele (SEQUENCE) necesare
+pentru generarea automată a ID-urilor.</p>
+<p>Codul de creare a tabelelor:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">-- Pasul 2: Creare tabele</span>
+<span class="hljs-comment">-- 2.1 Creare tabele intependente</span>
+<span class="hljs-keyword">CREATE TABLE</span> Categorii (
+    ID_Categorie SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    Tip_Categorie <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">UNIQUE</span>
+);
+<span class="hljs-keyword">CREATE TABLE</span> Clienti (
+    ID_Client SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    Nume_Client <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Prenume_Client <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Tel_Acasa <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Adresa <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Oras <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">UNIQUE</span>,
+    Tel_Mobil <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>)
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> Actori (
+    ID_Actor SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    Nume_Scena_Actor <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Nume_Familie_Actor <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Prenume_Actor <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Data_Nastere_Actor <span class="hljs-type">DATE</span>,
+     <span class="hljs-comment">-- Constrângere pentru a evita duplicatele</span>
+       <span class="hljs-keyword">CONSTRAINT</span> unicitate_biografica_actor <span class="hljs-keyword">UNIQUE</span> (Nume_Familie_Actor, Prenume_Actor, Data_Nastere_Actor)
+   );
+<span class="hljs-comment">-- 2.2 Creare tabele dependente</span>
+<span class="hljs-keyword">CREATE TABLE</span> Filme (
+    ID_Film SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    Titlu_Film <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Descriere_Film TEXT,
+    Data_Lansare <span class="hljs-type">DATE</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Categorie <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+
+    <span class="hljs-comment">-- Legătura cu tabelul părinte</span>
+    <span class="hljs-keyword">CONSTRAINT</span> fk_categorie_film <span class="hljs-keyword">FOREIGN KEY</span> (ID_Categorie)
+           <span class="hljs-keyword">REFERENCES</span> Categorii(ID_Categorie)
+           <span class="hljs-comment">-- Daca stergem o categorie, stergem toate filmele ce au aceeasi categorie pentru a nu avea erori</span>
+           <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE,
+
+    <span class="hljs-comment">-- Constrângere pentru a nu avea același film lansat în aceeași zi (evităm dublurile)</span>
+    <span class="hljs-keyword">CONSTRAINT</span> unicitate_film <span class="hljs-keyword">UNIQUE</span> (Titlu_Film, Data_Lansare)
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> Versiuni_Film (
+    ID_Versiune SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    ID_Film <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    Rezolutie <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,
+    Format <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">-- Digital, BluRay, Streaming</span>
+    Limba_Versiune <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>) <span class="hljs-keyword">NOT NULL</span>,
+
+    <span class="hljs-comment">-- Legătura cu filmul părinte</span>
+    <span class="hljs-keyword">CONSTRAINT</span> fk_versiune_film <span class="hljs-keyword">FOREIGN KEY</span> (ID_Film)
+        <span class="hljs-keyword">REFERENCES</span> Filme(ID_Film) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE,
+
+    <span class="hljs-comment">-- Constrângere CHECK: acceptăm doar anumite standarde de calitate</span>
+    <span class="hljs-keyword">CONSTRAINT</span> check_rezolutie <span class="hljs-keyword">CHECK</span> (Rezolutie <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;4K&#x27;</span>, <span class="hljs-string">&#x27;HD&#x27;</span>, <span class="hljs-string">&#x27;SD&#x27;</span>, <span class="hljs-string">&#x27;3D&#x27;</span>))
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> Distributie (
+    ID_Film <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Actor <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+
+    <span class="hljs-comment">-- Cheia primară este compusă din ambele ID-uri</span>
+    <span class="hljs-keyword">PRIMARY KEY</span> (ID_Film, ID_Actor),
+
+    <span class="hljs-keyword">CONSTRAINT</span> fk_dist_film <span class="hljs-keyword">FOREIGN KEY</span> (ID_Film) <span class="hljs-keyword">REFERENCES</span> Filme(ID_Film) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE,
+    <span class="hljs-keyword">CONSTRAINT</span> fk_dist_actor <span class="hljs-keyword">FOREIGN KEY</span> (ID_Actor) <span class="hljs-keyword">REFERENCES</span> Actori(ID_Actor) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> Feedback_Actori (
+    Feedback_Actor SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    ID_Client <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Film <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Actor <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    Comentariu_Actor_Rol TEXT,
+
+    <span class="hljs-keyword">CONSTRAINT</span> fk_fa_client <span class="hljs-keyword">FOREIGN KEY</span> (ID_Client) <span class="hljs-keyword">REFERENCES</span> Clienti(ID_Client),
+    <span class="hljs-keyword">CONSTRAINT</span> fk_fa_film <span class="hljs-keyword">FOREIGN KEY</span> (ID_Film) <span class="hljs-keyword">REFERENCES</span> Filme(ID_Film),
+    <span class="hljs-keyword">CONSTRAINT</span> fk_fa_actor <span class="hljs-keyword">FOREIGN KEY</span> (ID_Actor) <span class="hljs-keyword">REFERENCES</span> Actori(ID_Actor)
+);
+
+
+<span class="hljs-keyword">CREATE TABLE</span> Vizualizari (
+    ID_Vizualizare SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    ID_Client <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Versiune <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Film <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    Data_Vizualizare <span class="hljs-type">TIMESTAMP</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,
+    Durata_Vizualizare <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">-- exprimată în minute</span>
+    Stare_Vizualizare <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,
+
+    <span class="hljs-comment">-- Legaturi</span>
+    <span class="hljs-keyword">CONSTRAINT</span> fk_viz_client <span class="hljs-keyword">FOREIGN KEY</span> (ID_Client) <span class="hljs-keyword">REFERENCES</span> Clienti(ID_Client),
+    <span class="hljs-keyword">CONSTRAINT</span> fk_viz_versiune <span class="hljs-keyword">FOREIGN KEY</span> (ID_Versiune) <span class="hljs-keyword">REFERENCES</span> Versiuni_Film(ID_Versiune),
+    <span class="hljs-keyword">CONSTRAINT</span> fk_viz_film <span class="hljs-keyword">FOREIGN KEY</span> (ID_Film) <span class="hljs-keyword">REFERENCES</span> Filme(ID_Film),
+
+    <span class="hljs-comment">-- Constrângere CHECK pentru starea vizionării</span>
+    <span class="hljs-keyword">CONSTRAINT</span> check_stare_viz <span class="hljs-keyword">CHECK</span> (Stare_Vizualizare <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;Inceputa&#x27;</span>, <span class="hljs-string">&#x27;Terminata&#x27;</span>, <span class="hljs-string">&#x27;Intrerupta&#x27;</span>)),
+    <span class="hljs-comment">-- Constrângere pentru durată (nu poate fi negativă)</span>
+    <span class="hljs-keyword">CONSTRAINT</span> check_durata <span class="hljs-keyword">CHECK</span> (Durata_Vizualizare <span class="hljs-operator">&gt;=</span> <span class="hljs-number">0</span>)
+   );
+
+
+<span class="hljs-keyword">CREATE TABLE</span> Feedback_Voturi (
+    ID_Feedback SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    ID_Client <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    ID_Film <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    Rating_Film <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    Comentariu_Film_Text TEXT,
+    Sentiment_Analiza <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),
+
+    <span class="hljs-keyword">CONSTRAINT</span> fk_feed_client <span class="hljs-keyword">FOREIGN KEY</span> (ID_Client) <span class="hljs-keyword">REFERENCES</span> Clienti(ID_Client),
+    <span class="hljs-keyword">CONSTRAINT</span> fk_feed_film <span class="hljs-keyword">FOREIGN KEY</span> (ID_Film) <span class="hljs-keyword">REFERENCES</span> Filme(ID_Film),
+
+    <span class="hljs-comment">-- Constrângere CHECK pentru nota acordată (1-10)</span>
+    <span class="hljs-keyword">CONSTRAINT</span> check_rating <span class="hljs-keyword">CHECK</span> (Rating_Film <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">10</span>),
+    <span class="hljs-comment">-- Regula: Un client poate lăsa o singură recenzie pentru un anumit film</span>
+    <span class="hljs-keyword">CONSTRAINT</span> unique_feedback_client <span class="hljs-keyword">UNIQUE</span> (ID_Client, ID_Film)
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> Caracterizari_Selectate (
+    ID_Caracterizare SERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    ID_Feedback <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span>,
+    Eticheta_Predefinita <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+
+    <span class="hljs-keyword">CONSTRAINT</span> fk_char_feedback <span class="hljs-keyword">FOREIGN KEY</span> (ID_Feedback)
+    <span class="hljs-keyword">REFERENCES</span> Feedback_Voturi(ID_Feedback) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE
+);
+</div></code></pre>
+<h3 id="43-observații-privind-integritatea-și-optimizarea">4.3. Observații privind Integritatea și Optimizarea</h3>
+<p>În procesul de implementare, am aplicat următoarele decizii tehnice:</p>
+<ul>
+<li>Ordinea Creării: Tabelele sunt create respectând ierarhia dependențelor: întâi tabelele independente (Nivel 0), apoi cele care le referențiază.</li>
+<li>Normalizarea Vizualizărilor: Deși ID_Film putea fi dedus prin tabela Versiuni_Film, l-am inclus direct în Vizualizari pentru a optimiza viteza rapoartelor statistice
+frecvente (evitând joncțiunile multiple).</li>
+<li>Tratarea Ștergerilor: Am utilizat ON DELETE CASCADE în special la relația Film-Versiune și Feedback-Caracterizări, asigurând eliminarea automată a &quot;detaliilor&quot; atunci
+când &quot;entitatea principală&quot; dispare.</li>
+</ul>
+<h3 id="5-tratarea-excepțiilor-și-triggere">5. Tratarea Excepțiilor și Triggere</h3>
+<p>Sistemul prinde și afișează automat în GUI excepțiile ridicate de baza de date.
+Exemple:</p>
+<ol>
+<li>Funcția <code>fn_analiza_sentiment()</code> aruncă o excepție (prinsă în Java și afișată ca mesaj roșu pe ecran) dacă recenzia are sub 3 caractere.</li>
+<li>Funcția <code>fn_validare_vizualizare()</code> previne date false oprind înregistrarea unei durate mai mari de 500 de minute printr-o excepție personalizată.</li>
+</ol>
+<h3 id="6-prezentarea-aplicației-și-a-algoritmilor-complecși-plpgsql">6. Prezentarea Aplicației și a Algoritmilor Complecși (PL/pgSQL)</h3>
+<p>Această secțiune detaliază interfața grafică a platformei (realizată cu Java Spring Boot și Thymeleaf, fără ORM) și modul în care aceasta interacționează cu algoritmii avansați implementați exclusiv la nivelul serverului de baze de date (PL/pgSQL).</p>
+<h4 id="61-interfața-grafică-catalogul-și-detaliile">6.1. Interfața Grafică (Catalogul și Detaliile)</h4>
+<p>Aplicația expune utilizatorului un catalog de filme cu funcție de căutare. Navigarea este rapidă, datele fiind aduse prin interogări directe (JdbcTemplate).</p>
+<p><img src="images/acasa.png" alt="acasa"></p>
+<p><img src="images/filme.png" alt="filme"></p>
+<p>Accesând un film, utilizatorul poate selecta o versiune (4K, HD) și poate iniția o sesiune de vizionare. Interfața permite adăugarea de recenzii atât pentru film, cât și pentru actorii din distribuție.</p>
+<p><img src="images/detalii_film.png" alt="detalii_film"></p>
+<h4 id="62-tabloul-de-bord-dashboard-și-apelarea-logicii-sgbd">6.2. Tabloul de Bord (Dashboard) și Apelarea Logicii SGBD</h4>
+<p>Zona de &quot;Dashboard&quot; este punctul central unde se vizualizează rezultatele calculelor efectuate de serverul PostgreSQL. Niciun algoritm de predicție sau de agregare nu este scris în Java; aplicația client doar preia rezultatele.</p>
+<p><img src="images/dashboard.png" alt="dashboard"></p>
+<h4 id="63-algoritmi-complecși-implementați-în-plpgsql">6.3. Algoritmi Complecși Implementați în PL/pgSQL</h4>
+<p>Pentru a valorifica puterea serverului de baze de date și a evita transferul masiv de date prin rețea către client, am implementat următorii algoritmi direct în PostgreSQL, respectând astfel cerințele de performanță și logică pe server:</p>
+<p><strong>A. Sistemul de Recomandări prin Similaritate</strong>
+Acest algoritm identifică &quot;sufletele pereche&quot; cinematografice ale unui utilizator (persoane care au acordat note maxime la aceleași filme) și îi recomandă titluri noi pe baza acestui tipar.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">FUNCTION</span> get_recomandari_prin_similaritate(p_id_client <span class="hljs-type">INT</span>)
+<span class="hljs-keyword">RETURNS</span> <span class="hljs-keyword">TABLE</span> (Titlu_Recomandat <span class="hljs-type">VARCHAR</span>) <span class="hljs-keyword">AS</span> $$
+<span class="hljs-keyword">BEGIN</span>
+    <span class="hljs-keyword">RETURN</span> QUERY
+    <span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> f.Titlu_Film
+    <span class="hljs-keyword">FROM</span> Filme f
+    <span class="hljs-keyword">JOIN</span> Feedback_Voturi fv <span class="hljs-keyword">ON</span> f.ID_Film <span class="hljs-operator">=</span> fv.ID_Film
+    <span class="hljs-keyword">WHERE</span> fv.ID_Client <span class="hljs-keyword">IN</span> (
+        <span class="hljs-comment">-- Găsim utilizatorii care au dat nota 9 sau 10 la aceleași filme ca și clientul curent</span>
+        <span class="hljs-keyword">SELECT</span> fv2.ID_Client
+        <span class="hljs-keyword">FROM</span> Feedback_Voturi fv2
+        <span class="hljs-keyword">WHERE</span> fv2.ID_Film <span class="hljs-keyword">IN</span> (
+            <span class="hljs-keyword">SELECT</span> fv3.ID_Film 
+            <span class="hljs-keyword">FROM</span> Feedback_Voturi fv3 
+            <span class="hljs-keyword">WHERE</span> fv3.ID_Client <span class="hljs-operator">=</span> p_id_client <span class="hljs-keyword">AND</span> fv3.Rating_Film <span class="hljs-operator">&gt;=</span> <span class="hljs-number">9</span>
+        )
+        <span class="hljs-keyword">AND</span> fv2.ID_Client <span class="hljs-operator">&lt;&gt;</span> p_id_client
+        <span class="hljs-keyword">AND</span> fv2.Rating_Film <span class="hljs-operator">&gt;=</span> <span class="hljs-number">9</span>
+    )
+    <span class="hljs-comment">-- Excludem filmele pe care clientul curent le-a vizualizat deja</span>
+    <span class="hljs-keyword">AND</span> f.ID_Film <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-keyword">SELECT</span> v.ID_Film <span class="hljs-keyword">FROM</span> Vizualizari v <span class="hljs-keyword">WHERE</span> v.ID_Client <span class="hljs-operator">=</span> p_id_client)
+    LIMIT <span class="hljs-number">3</span>;
+<span class="hljs-keyword">END</span>;
+$$ <span class="hljs-keyword">LANGUAGE</span> plpgsql;
+</div></code></pre>
+<p><em>Explicație:</em> Funcția execută o interogare corelată profundă direct pe server. Mai întâi, se extrage submulțimea de filme apreciate de utilizatorul de bază. Apoi, se identifică grupul de utilizatori (<code>fv2.ID_Client</code>) care au o intersecție favorabilă cu această submulțime. În final, sunt returnate filmele vizionate de acest grup, aplicând o operație de diferență (<code>NOT IN</code>) pentru a exclude filmele deja cunoscute de utilizatorul inițial. Astfel se obține o recomandare inteligentă bazată pur pe interacțiunile din SGBD.</p>
+<p><strong>B. Analiza de Sentiment Automată (Triggere și PL/pgSQL)</strong>
+În momentul în care un client postează un comentariu, baza de date procesează textul &quot;on-the-fly&quot;, fără a solicita resurse de la nivelul aplicației Java.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">FUNCTION</span> fn_analiza_sentiment()
+<span class="hljs-keyword">RETURNS</span> <span class="hljs-keyword">TRIGGER</span> <span class="hljs-keyword">AS</span> $$
+<span class="hljs-keyword">DECLARE</span>
+    keywords_pos TEXT[] :<span class="hljs-operator">=</span> <span class="hljs-keyword">ARRAY</span>[<span class="hljs-string">&#x27;bun&#x27;</span>, <span class="hljs-string">&#x27;excelent&#x27;</span>, <span class="hljs-string">&#x27;recomand&#x27;</span>, <span class="hljs-string">&#x27;interesant&#x27;</span>, <span class="hljs-string">&#x27;super&#x27;</span>, <span class="hljs-string">&#x27;fain&#x27;</span>, <span class="hljs-string">&#x27;top&#x27;</span>];
+    keywords_neg TEXT[] :<span class="hljs-operator">=</span> <span class="hljs-keyword">ARRAY</span>[<span class="hljs-string">&#x27;slab&#x27;</span>, <span class="hljs-string">&#x27;plictisitor&#x27;</span>, <span class="hljs-string">&#x27;nasol&#x27;</span>, <span class="hljs-string">&#x27;prost&#x27;</span>, <span class="hljs-string">&#x27;timp&#x27;</span>, <span class="hljs-string">&#x27;dezamagit&#x27;</span>];
+    p_count <span class="hljs-type">INT</span> :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    n_count <span class="hljs-type">INT</span> :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    word TEXT;
+<span class="hljs-keyword">BEGIN</span>
+    <span class="hljs-comment">-- Validare și generare excepție personalizată</span>
+    IF NEW.Comentariu_Film_Text <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">AND</span> length(<span class="hljs-built_in">trim</span>(NEW.Comentariu_Film_Text)) <span class="hljs-operator">&lt;</span> <span class="hljs-number">3</span> <span class="hljs-keyword">THEN</span>
+        RAISE EXCEPTION <span class="hljs-string">&#x27;Eroare SGBD: Comentariul este prea scurt pentru a fi analizat.&#x27;</span>;
+    <span class="hljs-keyword">END</span> IF;
+
+    NEW.Sentiment_Analiza :<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Neutru&#x27;</span>;
+    IF NEW.Comentariu_Film_Text <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">THEN</span>
+        <span class="hljs-comment">-- Parsarea textului, eliminarea punctuației și împărțirea în cuvinte</span>
+        <span class="hljs-keyword">FOR</span> word <span class="hljs-keyword">IN</span> <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">unnest</span>(string_to_array(<span class="hljs-built_in">translate</span>(<span class="hljs-built_in">lower</span>(NEW.Comentariu_Film_Text), <span class="hljs-string">&#x27;.,!?;:&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>), <span class="hljs-string">&#x27; &#x27;</span>)) LOOP
+            IF word <span class="hljs-operator">=</span> <span class="hljs-keyword">ANY</span>(keywords_pos) <span class="hljs-keyword">THEN</span> p_count :<span class="hljs-operator">=</span> p_count <span class="hljs-operator">+</span> <span class="hljs-number">1</span>;
+            ELSIF word <span class="hljs-operator">=</span> <span class="hljs-keyword">ANY</span>(keywords_neg) <span class="hljs-keyword">THEN</span> n_count :<span class="hljs-operator">=</span> n_count <span class="hljs-operator">+</span> <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">END</span> IF;
+        <span class="hljs-keyword">END</span> LOOP;
+        
+        <span class="hljs-comment">-- Decizia finală</span>
+        IF p_count <span class="hljs-operator">&gt;</span> n_count <span class="hljs-keyword">THEN</span> NEW.Sentiment_Analiza :<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Pozitiv&#x27;</span>;
+        ELSIF n_count <span class="hljs-operator">&gt;</span> p_count <span class="hljs-keyword">THEN</span> NEW.Sentiment_Analiza :<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Negativ&#x27;</span>;
+        <span class="hljs-keyword">END</span> IF;
+    <span class="hljs-keyword">END</span> IF;
+    <span class="hljs-keyword">RETURN</span> <span class="hljs-keyword">NEW</span>;
+<span class="hljs-keyword">END</span>;
+$$ <span class="hljs-keyword">LANGUAGE</span> plpgsql;
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> trg_sentiment
+    BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">ON</span> Feedback_Voturi
+    <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> <span class="hljs-keyword">EXECUTE</span> <span class="hljs-keyword">FUNCTION</span> fn_analiza_sentiment();
+</div></code></pre>
+<p><em>Explicație:</em> Acest cod utilizează capabilitățile native de parsare de string-uri din PostgreSQL (<code>string_to_array</code>, <code>translate</code>). Se transformă comentariul într-un rând de elemente (prin <code>unnest</code>), care sunt comparate eficient, în buclă, cu array-uri predefinite de cuvinte-cheie. Trigger-ul este setat pe <code>BEFORE INSERT</code>, permițând modificarea înregistrării (<code>NEW.Sentiment_Analiza</code>) chiar înainte ca aceasta să fie efectiv scrisă pe disc. De asemenea, funcția ridică o excepție (prinsă ulterior de interfața Java) dacă datele sunt invalide.</p>
+<p><strong>C. Predicții Sezoniere</strong>
+Acest algoritm realizează o estimare predictivă privind succesul filmelor într-o anumită lună a anului, folosind datele agregate din trecut.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">FUNCTION</span> get_predictie_sezoniera(p_luna <span class="hljs-type">INT</span>)
+<span class="hljs-keyword">RETURNS</span> <span class="hljs-keyword">TABLE</span> (Titlu_Film <span class="hljs-type">VARCHAR</span>, Vizualizari_Estimate <span class="hljs-type">DECIMAL</span>) <span class="hljs-keyword">AS</span> $$
+<span class="hljs-keyword">BEGIN</span>
+    <span class="hljs-keyword">RETURN</span> QUERY
+    <span class="hljs-keyword">SELECT</span> f.Titlu_Film, <span class="hljs-built_in">COUNT</span>(v.ID_Vizualizare) <span class="hljs-operator">*</span> <span class="hljs-number">1.5</span> 
+    <span class="hljs-keyword">FROM</span> Filme f
+    <span class="hljs-keyword">JOIN</span> Vizualizari v <span class="hljs-keyword">ON</span> f.ID_Film <span class="hljs-operator">=</span> v.ID_Film
+    <span class="hljs-keyword">WHERE</span> <span class="hljs-built_in">EXTRACT</span>(<span class="hljs-keyword">MONTH</span> <span class="hljs-keyword">FROM</span> v.Data_Vizualizare) <span class="hljs-operator">=</span> p_luna
+    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> f.Titlu_Film
+    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span> <span class="hljs-keyword">DESC</span> 
+    LIMIT <span class="hljs-number">5</span>;
+<span class="hljs-keyword">END</span>;
+$$ <span class="hljs-keyword">LANGUAGE</span> plpgsql;
+</div></code></pre>
+<p><em>Explicație:</em> Algoritmul folosește funcția <code>EXTRACT</code> pentru a filtra istoricul imens de vizualizări exclusiv pe baza lunii calendaristice solicitate, ignorând anul. Realizează o agregare complexă (<code>COUNT</code>, <code>GROUP BY</code>) pentru a număra vizualizările per film și aplică o regulă de business matematică (un spor anticipat de 50% pentru previziuni, reprezentat prin înmulțirea cu <code>1.5</code>). Rezultatul este sortat descrescător și limitat la top 5 cele mai susceptibile succese de casă pentru luna respectivă, degrevând complet clientul de această sarcină.</p>
+
+</body>
+</html>

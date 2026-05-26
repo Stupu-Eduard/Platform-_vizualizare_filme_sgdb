@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${film.titluFilm} + ' - Detalii'"></title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
+        h1, h2, h3 { color: #333; }
+        .player-box { background: #e9ecef; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 5px solid #007bff; }
+        .error { color: #721c24; background-color: #f8d7da; padding: 10px; border: 1px solid #f5c6cb; border-radius: 4px; margin-top: 10px; }
+        .success { color: #155724; background-color: #d4edda; padding: 10px; border: 1px solid #c3e6cb; border-radius: 4px; margin-top: 10px; }
+        button { background-color: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button.stop { background-color: #dc3545; }
+        input[type="number"], textarea { width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        nav { margin-bottom: 20px; text-align: center; }
+        nav a { margin: 0 10px; font-weight: bold; text-decoration: none; color: #007bff; }
+        nav a:hover { text-decoration: underline; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #fdfdfd; margin-bottom: 10px; padding: 15px; border: 1px solid #eee; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Acasă</a>
+    <a href="/filme">Filme</a>
+</nav>
+
+<div class="container">
+    <h1 th:text="${film.titluFilm}"></h1>
+    <p><strong>Categorie:</strong> <span th:text="${film.tipCategorie}"></span></p>
+    <p><strong>Lansare:</strong> <span th:text="${film.dataLansare}"></span></p>
+    <p><strong>Rating Mediu:</strong> <span th:text="${film.ratingMediu != null ? film.ratingMediu + '/10' : 'N/A'}"></span></p>
+    <p><strong>Descriere:</strong> <span th:text="${film.descriereFilm ?: 'Fără descriere'}"></span></p>
+
+    <div class="player-box">
+        <h3>Player Video</h3>
+        <p>Apasă START pentru a începe vizionarea. Introdu o durată în minute și apasă STOP pentru a salva.</p>
+        
+        <form th:action="@{'/film/vizionare/start/' + ${film.idFilm}}" method="post" style="display:block; margin-bottom: 15px;">
+            <label for="idVersiune">Selectează Versiunea:</label>
+            <select name="idVersiune" id="idVersiune" required style="padding: 5px; margin-right: 10px;">
+                <option value="" disabled selected>Alege versiunea...</option>
+                <option th:each="v : ${versiuni}" 
+                        th:value="${v.id_versiune}" 
+                        th:text="${v.rezolutie} + ' - ' + ${v.format} + ' (' + ${v.limba_versiune} + ')'">
+                </option>
+            </select>
+            <button type="submit">▶ START VIZIONARE</button>
+        </form>
+
+        <form th:action="@{'/film/vizionare/stop/' + ${film.idFilm}}" method="post" style="display:inline-block;">
+            <label for="durata">Durată vizionată (min):</label>
+            <input type="number" id="durata" name="durata" value="120" style="width: 80px; display:inline-block;" required>
+            <button type="submit" class="stop">⏹ STOP & SALVEAZĂ</button>
+        </form>
+
+        <div th:if="${eroare}" class="error">
+            <strong>Eroare:</strong> <span th:text="${eroare}"></span>
+        </div>
+    </div>
+
+    <h3>Distribuție & Comentarii Actori</h3>
+    <ul th:if="${not #lists.isEmpty(distributie)}">
+        <li th:each="a : ${distributie}">
+            <strong th:text="${a.numeScena}"></strong>
+            <form th:action="@{/film/feedback/actor}" method="post" style="margin-top: 5px;">
+                <input type="hidden" name="idFilm" th:value="${film.idFilm}">
+                <input type="hidden" name="idActor" th:value="${a.idActor}">
+                <input type="text" name="comentariu" placeholder="Adaugă un comentariu despre prestație..." required style="width: 70%;">
+                <button type="submit" style="padding: 5px 10px; font-size: 0.8em;">Adaugă</button>
+            </form>
+            <div style="margin-top: 5px; font-size: 0.9em; color: #555;">
+                <div th:each="fa : ${feedbackActori}" th:if="${fa.id_actor == a.idActor}">
+                    • <span th:text="${fa.comentariu_actor_rol}"></span>
+                    <small th:if="${fa.sentiment_analiza}" 
+                           th:text="'(' + ${fa.sentiment_analiza} + ')'"
+                           th:style="${fa.sentiment_analiza == 'Pozitiv' ? 'color:green' : (fa.sentiment_analiza == 'Negativ' ? 'color:red' : 'color:gray')}"></small>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <p th:if="${#lists.isEmpty(distributie)}">Nu sunt actori înregistrați pentru acest film.</p>
+
+    <hr>
+    <h3>Recenzii Utilizatori</h3>
+    <ul th:if="${not #lists.isEmpty(comentarii)}">
+        <li th:each="c : ${comentarii}">
+            <strong th:text="${c.rating_film} + '/10'"></strong> -
+            <i th:text="${c.comentariu_film_text}"></i>
+            <div style="margin: 5px 0;">
+                <span th:each="t : ${c.taguri}" 
+                      style="background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 0.8em; margin-right: 5px;" 
+                      th:text="'#' + ${t}"></span>
+            </div>
+            <small>Analiză Sentiment (Trigger PL/pgSQL): 
+                <b th:text="${c.sentiment_analiza}"
+                   th:style="${c.sentiment_analiza == 'Pozitiv' ? 'color:green' : (c.sentiment_analiza == 'Negativ' ? 'color:red' : 'color:gray')}">
+                </b>
+            </small>
+        </li>
+    </ul>
+    <p th:if="${#lists.isEmpty(comentarii)}">Nu există recenzii pentru acest film.</p>
+
+    <hr>
+
+    <h3>Adaugă o recenzie</h3>
+    <p><i>(Excepție PL/pgSQL dacă textul < 3 caractere)</i></p>
+    <form th:action="@{/film/feedback}" method="post">
+        <input type="hidden" name="idFilm" th:value="${film.idFilm}">
+
+        <div style="margin-bottom: 10px;">
+            <label>Nota (1-10):</label>
+            <input type="number" name="nota" min="1" max="10" required style="width: 60px;">
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label>Comentariu:</label>
+            <textarea name="comentariu" rows="3" required></textarea>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Opțiuni predefinite:</label><br>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 5px;">
+                <label><input type="checkbox" name="taguri" value="mi-a placut"> mi-a plăcut</label>
+                <label><input type="checkbox" name="taguri" value="nu mi-a placut"> nu mi-a plăcut</label>
+                <label><input type="checkbox" name="taguri" value="interesant"> interesant</label>
+                <label><input type="checkbox" name="taguri" value="emotionant"> emoționant</label>
+                <label><input type="checkbox" name="taguri" value="plictisitor"> plictisitor</label>
+                <label><input type="checkbox" name="taguri" value="as recomanda"> aș recomanda</label>
+                <label><input type="checkbox" name="taguri" value="as mai viziona"> aș mai viziona</label>
+                <label><input type="checkbox" name="taguri" value="actor principal apreciat"> actor apreciat</label>
+                <label><input type="checkbox" name="taguri" value="scenariu slab"> scenariu slab</label>
+            </div>
+        </div>
+
+        <button type="submit">Trimite Recenzia</button>
+    </form>
+</div>
+
+</body>
+</html>
